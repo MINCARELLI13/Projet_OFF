@@ -6,6 +6,8 @@ from Config.config import categories, name_of_product_fields, user, password, ho
 from View.menu import Menu
 from Database.init_database import Initialise_database
 from Database.requests import Request
+from Database.filling import Filling
+from Database.tables_creation import Tables
 
 
 class Show(Initialise_database):
@@ -17,6 +19,8 @@ class Show(Initialise_database):
         self.selected_substitute = []
         self.menu = Menu()
         self.request = Request()
+        self.filling = Filling()
+        self.tables = Tables()
     
 
     def main_menu(self):
@@ -30,7 +34,7 @@ class Show(Initialise_database):
             response = int(input("Sélectionnez une action (1 à 4): ") or 0)
         actions = {
             1: show.select_category_menu,
-            2: show.display_substituts_list,
+            2: show.display_recorded_substitutes,
             3: show.reinitialisation_BDD_OFF,
             4: show.quit_program
             }
@@ -199,19 +203,34 @@ class Show(Initialise_database):
 
 
     def record_selected_substitute(self):
-        self.__clear()
+        """ records the substitute chosen by user """
+        # self.__clear()
+        self.filling.fill_substitutes_table(self.selected_product[0], self.selected_substitute[0])
         print("Enregistrement du substitut sélectionné...")
         quit()
-        pass
 
 
-    def display_substituts_list(self):
+    def display_recorded_substitutes(self):
         """ displays all recorded substitutes """
-        pass
+        # loads all substitutes recorded in table 'Substitutes'
+        substitutes_recorded_dico = self.request.load_recorded_substitutes()
+        # displays name and brand of each product with her substitute(s)
+        self.__clear()
+        print("Affichage des substituts enregistrés pour chaque produit :"), print()
+        for product_id in substitutes_recorded_dico:
+            print("- " + self.request.get_name_of_product_id(product_id), " :",  end=" ")
+            for substitut_id in substitutes_recorded_dico[product_id]:
+                print(self.request.get_name_of_product_id(substitut_id), end=", ")
+            print()
+        print()
 
 
     def reinitialisation_BDD_OFF(self):
+        self.__clear()
         print("reinitialisation_BDD_OFF")
+        self.tables.drop_all_tables_BDD_OFF()
+        self.tables.create_all_tables_BDD_OFF()
+
 
     def quit_program(self):
         """ end of program """
@@ -221,10 +240,7 @@ class Show(Initialise_database):
         quit()
         print("quit_program")
 
-    def execute_action(self, action):
-        # executes action choosed
-        return action()
-    
+
     def __clear(self): 
 	    # for windows 
 	    if name == 'nt': 
@@ -242,7 +258,7 @@ if __name__=='__main__':
     quit()
     actions = {
             1: show.select_category_menu,
-            2: show.display_substituts_list,
+            2: show.display_recorded_substitutes,
             3: show.reinitialisation_BDD_OFF,
             4: show.quit_program
             }
