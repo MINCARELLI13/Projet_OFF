@@ -40,5 +40,15 @@ class Request(Initialise_database):
         return substitutes_recorded_dico
 
 
+    def get_name_of_product_id(self, product_id):
+        """ gets name and brand of product with her product_id
+            In reception : receives the 'id' of one product
+            On return    : return a tuple (name, brand) of this product
+        """
+        query = f"SELECT name, brand FROM Product WHERE id = '{product_id}'"
+        self.cursor.execute(query)
+        product = self.cursor.fetchone()
+        return product[0] + " (" + product[1] + ")"
+
 
 
