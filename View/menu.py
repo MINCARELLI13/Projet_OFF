@@ -1,6 +1,7 @@
 # coding: utf-8
 from os import system, name
-from config import categories, name_of_product_fields
+# from config import categories, name_of_product_fields
+# import config
 import sys
 
 """
@@ -13,7 +14,6 @@ class Menu:
 		""" displays the main menu """
 		self.__clear()
 		print(
-			f"Faites votre choix parmi les propositions suivantes : \n"
 			f"1 - Rechercher un produit \n"
 			f"2 - Afficher les produits substitués \n"
 			f"3 - Réinitialiser la base de données \n"
@@ -22,10 +22,10 @@ class Menu:
 		print()
 
 
-	def category_menu(self):
+	def category_menu(self, catg):
 		""" displays stored categories """
 		self.__clear()
-		[print(key, '- ', categories[key]) for key in categories.keys()]
+		[print(key, '- ', catg[key]) for key in catg.keys()]
 		print()
 	
 
@@ -40,7 +40,7 @@ class Menu:
 		print()
 
 
-	def display_details_of_product(self, product):
+	def display_details_of_product(self, product, name_of_product_fields):
 		""" displays details of a'product' """
 		for i in range(1, 7):
 			print('  ', name_of_product_fields[i-1], ' :', product[i])
@@ -58,17 +58,20 @@ class Menu:
 		print()
 
 
-	def display_details_of_substitute(self, substitute):
+	def display_details_of_substitute(self, substitute, name_of_product_fields):
 		""" displays details of a 'substitute' """
-		print("Affichage du substitut sélectionné pour le produit ci-dessus :")
-		self.display_details_of_product(substitute)
+		print("Substitut sélectionné pour le produit ci-dessus :")
+		self.display_details_of_product(substitute, name_of_product_fields)
+		print()
 
 
-	def substitute_already_recorded(self, product, substitute):
+	def display_already_record(self, product, substitute):
 		""" indicates that the selected substitute has already
 			been registered for this product
 		"""
 		self.__clear()
+		print("\t ATTENTION : le substitut sélectionné a déjà été enregistré pour ce produit !")
+		print()
 		# displays the product to substitut
 		print('Produit à remplacer par un substitut :', product[1], '(', product[2], ')')
 		print()
@@ -102,11 +105,11 @@ class Menu:
 	  
 	    # for mac and linux
 	    else: 
-	        _ = system('clear') 
+	        _ = system('clear')
 
 
 if __name__=='__main__':
-	sys.path.insert(0, "C:/Users/utilisateur/Desktop/Formation_OpenClassRoom/Projet_5/kevin")
+	# sys.path.insert(0, "C:/Users/utilisateur/Desktop/Formation_OpenClassRoom/Projet_5/Projet_OFF")
 	menu = Menu()
 	menu.main_menu()
 	input("")
@@ -118,11 +121,11 @@ if __name__=='__main__':
 	system('CLS')
 	product = (35, 'Carré gourmand Tomates et Mozzarella', 'Herta', 'https', 'a', 'eau et sel (pour le goût)', ' Magasins U', 5)
 	print('Affichage du produit sélectionné pour la catégorie "', categories[5],'" :')
-	menu.display_details_of_product(product)
+	menu.display_details_of_product(product, name_of_product_fields)
 	input("")
 	system('CLS')
 	print("Produit à remplacer par un substitut :")
-	menu.display_details_of_product(product)
+	menu.display_details_of_product(product, name_of_product_fields)
 	substitutes_list = [[31, 'Gazpacho', 'Alvalle', 'https', 'a', 'eau et sel (pour le goût)', ' Franprix,Magasins U,Auchan', 5], [33, 'Salade & Compagnie - Manhattan', 'Sodebo,salade & compagnie', 'https', 'a', 'eau et sel (pour le goût)', ' Carrefour,Super U,Auchan,Magasins U,Cora,Elclerc,Intermarche', 5], [37, 'Carottes râpées au citron de Sicile', 'Bonduelle', 'https', 'a', 'eau et sel (pour le goût)', ' Magasins U', 5], [38, 'Croq soja provencal', 'Céréal Bio', 'https', 'a',
 'eau et sel (pour le goût)', ' Carrefour,Intermarche,Casino,Magasins U, Leclerc', 5], [39, 'Quinoa gourmand', 'Tipiak', 'https', 'a', 'eau et sel (pour le goût)', ' carrefour,Leclerc,Magasins U', 5]]
 	substitute = (39, 'Quinoa gourmand', 'Tipiak', 'https', 'a', 'eau et sel (pour le goût)', ' carrefour,Leclerc,Magasins U', 5)
