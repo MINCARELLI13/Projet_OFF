@@ -1,0 +1,11 @@
+# mypy
+.mypy_cache /
+
+# analyseur de type statique pytype
+.pytype /
+
+# Symboles de débogage Cython
+cython_debug /
+
+# __pycache__
+*.pyc
