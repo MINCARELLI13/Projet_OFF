@@ -5,7 +5,7 @@ import sys
 from Config.config import categories, name_of_product_fields, user, password, host, database
 from View.menu import Menu
 from Database.init_database import Initialise_database
-from Database.requests import Request
+from Database.sql_requests import Request_Sql
 from Database.filling import Filling
 from Database.tables_creation import Tables
 
@@ -18,7 +18,7 @@ class Show(Initialise_database):
         self.selected_product = []
         self.selected_substitute = []
         self.menu = Menu()
-        self.request = Request()
+        self.request = Request_Sql()
         self.filling = Filling()
         self.tables = Tables()
     
@@ -87,6 +87,7 @@ class Show(Initialise_database):
 
     def select_useful_substituts(self, substitutes_list, nutri_test):
         """ selects substitutes whose nutriscore is lower than a nutriscore test """
+        # substitutes_liste = self.tri_bulles(substitutes_list, 4)
         results_list = []
         for data in substitutes_list:
             if data[4] <= nutri_test:
@@ -205,7 +206,7 @@ class Show(Initialise_database):
     def record_selected_substitute(self):
         """ records the substitute chosen by user """
         # self.__clear()
-        self.filling.fill_substitutes_table(self.selected_product[0], self.selected_substitute[0])
+        self.filling.fill_substitute_table(self.selected_product[0], self.selected_substitute[0])
         print("Enregistrement du substitut sélectionné...")
         quit()
 
@@ -230,6 +231,11 @@ class Show(Initialise_database):
         print("reinitialisation_BDD_OFF")
         self.tables.drop_all_tables_BDD_OFF()
         self.tables.create_all_tables_BDD_OFF()
+        self.filling.fill_table_Category(categories)
+        # Appeler l'API
+
+        # enregistrer les infos dans la table Product
+        
 
 
     def quit_program(self):
@@ -239,6 +245,15 @@ class Show(Initialise_database):
         print()
         quit()
         print("quit_program")
+
+
+    def tri_bulles(self, my_liste, column):
+        for i in range (len(my_liste)-1,0, -1):
+            for j in range(i):
+                if my_liste[j][column]>my_liste[j+1][column]:
+                    # on inverse les éléments de la liste situés aux index j et j+1
+                    my_liste[j], my_liste[j+1] = my_liste[j+1], my_liste[j]
+        return my_liste
 
 
     def __clear(self): 
