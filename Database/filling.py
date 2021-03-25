@@ -1,5 +1,6 @@
 # coding: utf-8
 from Database.init_database import Initialise_database
+from API.api_requests import Request_Api
 
 
 class Filling(Initialise_database):
@@ -7,8 +8,9 @@ class Filling(Initialise_database):
 
     def __init__(self):
         Initialise_database.__init__(self)
+        self.request_api = Request_Api()
     
-    def fill_substitutes_table(self, original_id, substitute_id):
+    def fill_substitute_table(self, original_id, substitute_id):
         """ Inserts the substitute of a product in database BDD_OFF
             In reception : product_id and her substitute_id 
             On return    : nothing
@@ -21,3 +23,52 @@ class Filling(Initialise_database):
         self.cnx.commit()
         print()
         print("Enregistrement du substitut effectué !")
+    
+    def fill_table_Category(self, categories):
+        """ Insertion of the types of categories in database BDD_OFF
+        (Snacks salés, Gâteaux, Sodas...) """
+        for catg in categories:
+            query = f"INSERT INTO Category (name) VALUES ('{categories[catg]}')"
+            self.cursor.execute(query)
+            self.cnx.commit()
+
+    def fill_table_Product(self, catg_id, infos_of_products):
+        """ For each category of products
+        makes a request to OpenFoodFacts API
+        and fills the 'Product' table of BDD_OFF """
+        # selects only usables informations
+        for info in infos_of_products:
+            try:
+                if info['url'] \
+                and info['product_name_fr'] \
+                and info['brands'] \
+                and info['nutrition_grade_fr'] \
+                and info['ingredients_text_fr'] \
+                and info['stores'] \
+                and ('Chargement' not in info['product_name_fr'][0:10]):
+                    URL_nb = str(info['url']).replace("'", " ")                         # URL_nb = 'https'
+                    Nom = str(info['product_name_fr']).replace("'", " ")                # Nom = 'moi'
+                    Marque = str(info['brands']).replace("'", " ")                      # Marque = 'Havelard'
+                    Nutriscore = str(info['nutrition_grade_fr']).replace("'", " ")      # Nutriscore = 'D'
+                    Ingredients = 'eau et sel (pour le goût)'
+                    # Ingredients = str(info['ingredients_text_fr']).replace("'", " ")
+                    Magasins = str(info['stores']).replace("'", " ")                    # Magasins = 'maison'
+                    # insertion of products of category in "BDD_OFF.Product"
+                    query = f"INSERT INTO Product ( \
+                            name, brand,url, nutriscore, \
+                            ingredients, stores, category_id) \
+                            VALUES ('{Nom}', '{Marque}', \
+                            '{URL_nb}', '{Nutriscore}', \
+                            '{Ingredients}',' {Magasins}', '{catg_id}')"
+                    self.cursor.execute(query)
+                    self.cnx.commit()
+            except KeyError as msg:
+                pass
+                # !!!  à supprimer avant la présentation  !!!
+                print("     Il manque la clé", msg)
+
+
+if __name__=='__main__':
+    fill = Filling()
+    fill.filling_table_Product()
+
