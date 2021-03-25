@@ -6,6 +6,7 @@ from Config.config import categories, name_of_product_fields, user, password, ho
 from View.menu import Menu
 from Database.init_database import Initialise_database
 from Database.sql_requests import Request_Sql
+from API.api_requests import Request_Api
 from Database.filling import Filling
 from Database.tables_creation import Tables
 
@@ -19,6 +20,7 @@ class Show(Initialise_database):
         self.selected_substitute = []
         self.menu = Menu()
         self.request = Request_Sql()
+        self.request_api = Request_Api()
         self.filling = Filling()
         self.tables = Tables()
     
@@ -217,13 +219,20 @@ class Show(Initialise_database):
         substitutes_recorded_dico = self.request.load_recorded_substitutes()
         # displays name and brand of each product with her substitute(s)
         self.__clear()
-        print("Affichage des substituts enregistrés pour chaque produit :"), print()
-        for product_id in substitutes_recorded_dico:
-            print("- " + self.request.get_name_of_product_id(product_id), " :",  end=" ")
-            for substitut_id in substitutes_recorded_dico[product_id]:
-                print(self.request.get_name_of_product_id(substitut_id), end=", ")
+        # print("len(substitutes_recorded_dico) : ", len(substitutes_recorded_dico))
+        if len(substitutes_recorded_dico) == 0:
             print()
-        print()
+            input(" Aucun substitut n'a été enregistré dans la base de données !")
+            self.main_menu()
+        else:
+            print("Affichage des substituts enregistrés pour chaque produit :"), print()
+            for product_id in substitutes_recorded_dico:
+                print("- " + self.request.get_name_of_product_id(product_id), " :",  end=" ")
+                for substitut_id in substitutes_recorded_dico[product_id]:
+                    print(self.request.get_name_of_product_id(substitut_id), end=", ")
+                print()
+                print()
+            print()
 
 
     def reinitialisation_BDD_OFF(self):
@@ -232,10 +241,18 @@ class Show(Initialise_database):
         self.tables.drop_all_tables_BDD_OFF()
         self.tables.create_all_tables_BDD_OFF()
         self.filling.fill_table_Category(categories)
-        # Appeler l'API
+        for catg_id in categories:
+            # get the products of a category in the API 
+            infos_of_products = self.request_api.get_products_of_category(categories[catg_id])
+            # records datas in Product table
+            self.filling.fill_table_Product(catg_id, infos_of_products)
 
-        # enregistrer les infos dans la table Product
-        
+
+    def clean_request_api(self, ingredients):
+        """ cleans items of api's request """
+        # print("info['ingredients_text_fr'] : ", tempo)
+        # ' '.join("   je      fais du       python".split())
+        return ' '.join(ingredients.split())
 
 
     def quit_program(self):
