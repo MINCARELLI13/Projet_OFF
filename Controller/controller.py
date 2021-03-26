@@ -174,6 +174,7 @@ class Show(Initialise_database):
                 self.substitute_already_recorded()
             else:
                 self.record_selected_substitute()
+
         else:
             self.main_menu()
         
@@ -209,8 +210,9 @@ class Show(Initialise_database):
         """ records the substitute chosen by user """
         # self.__clear()
         self.filling.fill_substitute_table(self.selected_product[0], self.selected_substitute[0])
-        print("Enregistrement du substitut sélectionné...")
-        quit()
+        print("Enregistrement du substitut effectué...")
+        input("")
+        self.main_menu()
 
 
     def display_recorded_substitutes(self):
@@ -244,15 +246,37 @@ class Show(Initialise_database):
         for catg_id in categories:
             # get the products of a category in the API 
             infos_of_products = self.request_api.get_products_of_category(categories[catg_id])
+            # delete page break "\n" and limits length of "ingredients"
+            infos_of_products = self.clean_request_api(infos_of_products)
             # records datas in Product table
             self.filling.fill_table_Product(catg_id, infos_of_products)
 
 
-    def clean_request_api(self, ingredients):
+    def clean_request_api(self, infos_of_products):
         """ cleans items of api's request """
-        # print("info['ingredients_text_fr'] : ", tempo)
-        # ' '.join("   je      fais du       python".split())
-        return ' '.join(ingredients.split())
+        for info in infos_of_products:
+            for data in info:
+                # limits length of "ingredients
+                if len(info[data]) > 350:
+                    info[data] = info[data][:350]
+                # delete page break "\n"
+                # if "\n" in info[data]:
+                my_txt = info[data].maketrans("\n", " ")
+                info[data] = info[data].translate(my_txt)
+                my_txt = info[data].maketrans("\r", " ")
+                info[data] = info[data].translate(my_txt)
+            try:
+                info['url'] = str(info['url']).replace("'", " ")
+                info['product_name_fr'] = str(info['product_name_fr']).replace("'", " ")
+                info['brands'] = str(info['brands']).replace("'", " ")
+                info['nutrition_grade_fr'] = str(info['nutrition_grade_fr']).replace("'", " ")
+                info['ingredients_text_fr'] = str(info['ingredients_text_fr']).replace("'", " ")
+                info['stores'] = str(info['stores']).replace("'", " ")
+            except KeyError as msg:
+                pass
+                # !!!  à supprimer avant la présentation  !!!
+                print("     Il manque la clé", msg)
+        return infos_of_products
 
 
     def quit_program(self):
