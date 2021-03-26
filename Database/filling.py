@@ -21,8 +21,6 @@ class Filling(Initialise_database):
         # input("")
         self.cursor.execute(query)
         self.cnx.commit()
-        print()
-        print("Enregistrement du substitut effectué !")
     
     def fill_table_Category(self, categories):
         """ Insertion of the types of categories in database BDD_OFF
@@ -39,6 +37,7 @@ class Filling(Initialise_database):
         # selects only usables informations
         for info in infos_of_products:
             try:
+                # if each field of product is not empty
                 if info['url'] \
                 and info['product_name_fr'] \
                 and info['brands'] \
@@ -46,22 +45,35 @@ class Filling(Initialise_database):
                 and info['ingredients_text_fr'] \
                 and info['stores'] \
                 and ('Chargement' not in info['product_name_fr'][0:10]):
-                    URL_nb = str(info['url']).replace("'", " ")                         # URL_nb = 'https'
-                    Nom = str(info['product_name_fr']).replace("'", " ")                # Nom = 'moi'
-                    Marque = str(info['brands']).replace("'", " ")                      # Marque = 'Havelard'
-                    Nutriscore = str(info['nutrition_grade_fr']).replace("'", " ")      # Nutriscore = 'D'
-                    Ingredients = 'eau et sel (pour le goût)'
-                    # Ingredients = str(info['ingredients_text_fr']).replace("'", " ")
-                    Magasins = str(info['stores']).replace("'", " ")                    # Magasins = 'maison'
                     # insertion of products of category in "BDD_OFF.Product"
                     query = f"INSERT INTO Product ( \
                             name, brand,url, nutriscore, \
                             ingredients, stores, category_id) \
-                            VALUES ('{Nom}', '{Marque}', \
-                            '{URL_nb}', '{Nutriscore}', \
-                            '{Ingredients}',' {Magasins}', '{catg_id}')"
+                            VALUES ('{info['product_name_fr']}', \
+                                '{info['brands']}', '{info['url']}', \
+                                '{info['nutrition_grade_fr']}', \
+                                '{info['ingredients_text_fr']}', \
+                                '{info['stores']}', '{catg_id}')"
                     self.cursor.execute(query)
                     self.cnx.commit()
+
+                    # URL_nb = str(info['url'])
+                    # Nom = str(info['product_name_fr'])
+                    # Marque = str(info['brands'])
+                    # Nutriscore = str(info['nutrition_grade_fr'])
+                    # Ingredients = str(info['ingredients_text_fr'])
+                    # Magasins = str(info['stores'])
+                    # # insertion of products of category in "BDD_OFF.Product"
+                    # query = f"INSERT INTO Product ( \
+                    #         name, brand,url, nutriscore, \
+                    #         ingredients, stores, category_id) \
+                    #         VALUES ('{Nom}', '{Marque}', \
+                    #         '{URL_nb}', '{Nutriscore}', \
+                    #         '{Ingredients}',' {Magasins}', '{catg_id}')"
+                    # self.cursor.execute(query)
+                    # self.cnx.commit()
+
+
             except KeyError as msg:
                 pass
                 # !!!  à supprimer avant la présentation  !!!
