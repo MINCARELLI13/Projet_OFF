@@ -7,6 +7,7 @@ class Tables(Initialise_database):
     """ contains all the requests to create or drop tables of database BDD_OFF """
 
     def __init__(self):
+        """ to use self.cnx and self.cursor for requests on MySQL """
         Initialise_database.__init__(self)
 
 
@@ -42,7 +43,7 @@ class Tables(Initialise_database):
             id INT NOT NULL AUTO_INCREMENT, \
             name VARCHAR(100) NOT NULL, \
             brand VARCHAR(100) NOT NULL, \
-            url VARCHAR(100) NOT NULL, \
+            url VARCHAR(200) NOT NULL, \
             nutriscore CHAR(1) NOT NULL, \
             ingredients VARCHAR(500) NULL DEFAULT NULL, \
             stores VARCHAR(150) NULL DEFAULT NULL, \
@@ -76,4 +77,4 @@ class Tables(Initialise_database):
 
 
 if __name__ == '__main__':
-    tables = Tables()
+    pass
