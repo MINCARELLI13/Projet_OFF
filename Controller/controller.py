@@ -6,7 +6,7 @@ FIELDS_OF_PRODUCTS, PRODUCTS_NB , USER, PASSWORD, HOST, DATABASE
 from View.menu import Menu
 from Database.init_database import Initialise_database
 from Database.sql_requests import Request_Sql
-from API.api_requests import Request_Api
+from API.requests_api import Request_Api
 from Database.filling import Filling
 from Database.tables_creation import Tables
 
