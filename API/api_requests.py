@@ -1,14 +1,16 @@
 # coding: utf-8
 import requests
-from Config.config import categories, fields_of_products, products_nb, url
 
 
 class Request_Api:
-    """ contains all the requests to practice on OpenFoodFacts's API """
+    """ contains all the requests made on OpenFoodFacts's API """
 
-    def get_products_of_category(self, catg_name):
+    def get_products_of_category(self, catg_name, fields_of_products, products_nb, url):
         """
         For each category of products makes a request to OpenFoodFacts API
+        In reception : all parameters to make request to API's OFF
+        On return    : list of dictionaries where each dictionary 
+                        contains all information on one product 
         """
         parameters_request_API = {
             'action': 'process', 'tagtype_0': 'categories',
@@ -22,5 +24,4 @@ class Request_Api:
 
 
 if __name__=='__main__':
-    request_api = Request_Api()
-    request_api.filling_table_Product()
+    pass
