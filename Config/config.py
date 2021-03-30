@@ -14,7 +14,7 @@ PASSWORD = '123ab456'
 
 """ host of connexion to SQL """
 HOST = 'localhost'
- 
+
 """ database used """
 DATABASE = 'BDD_OFF'
 
@@ -22,9 +22,10 @@ DATABASE = 'BDD_OFF'
 URL = 'https://fr.openfoodfacts.org/cgi/search.pl'
 
 """ fields of the products to load """
-FIELDS_OF_PRODUCTS = ('url', 'product_name_fr',
-                    'brands', 'nutrition_grade_fr',
-                    'ingredients_text_fr', 'stores')
+FIELDS_PRODUCTS_API = ('product_name_fr', 'brands', 'url', 'nutrition_grade_fr', 'ingredients_text_fr', 'stores')
+
+FIELDS_SQL_API = {'name': 'product_name_fr', 'brand': 'brands', 'url': 'url', 'nutriscore': 'nutrition_grade_fr',
+                 'ingredients': 'ingredients_text_fr', 'stores': 'stores'}  # , 'category_id: '}
 
 NAME_OF_PRODUCT_FIELDS = ('nom', 'marque', 'url', 'nutriscore', 'ingrédients', 'magasins')
 
