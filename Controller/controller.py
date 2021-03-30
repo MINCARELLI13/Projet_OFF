@@ -1,32 +1,35 @@
+""" module Controller to link Model and View modules """
 # coding: utf-8
-from os import system, name
+import os
 import sys
-from Config.config import CATEGORIES, NAME_OF_PRODUCT_FIELDS, URL,\
-FIELDS_OF_PRODUCTS, PRODUCTS_NB , USER, PASSWORD, HOST, DATABASE
-from View.menu import Menu
+from Config.config import CATEGORIES, NAME_OF_PRODUCT_FIELDS,\
+                            URL, FIELDS_PRODUCTS_API, PRODUCTS_NB
 from Database.init_database import Initialise_database
 from Database.sql_requests import Request_Sql
-from API.requests_api import Request_Api
 from Database.filling import Filling
 from Database.tables_creation import Tables
+from API.requests_api import RequestApi
+from View.menu import Menu
 
 
 class Show(Initialise_database):
+    """ this class is used to link Model and View modules """
 
     def __init__(self):
+        """ initializes variables """
         Initialise_database.__init__(self)
         self.selected_category_id = 99999
         self.selected_product = []
         self.selected_substitute = []
         self.menu = Menu()
         self.request_sql = Request_Sql()
-        self.request_api = Request_Api()
+        self.request_api = RequestApi()
         self.filling = Filling()
         self.tables = Tables()
-    
+
     def main_menu(self):
         """ displays actions of the main menu
-            and launches the chosen one 
+            and launches the chosen one
             In reception : nothing
             On return    : displays the menu and
                             triggers chosen action
@@ -42,14 +45,14 @@ class Show(Initialise_database):
         self.menu.main_menu()
         response = int(input("Sélectionnez une action : ") or 0)
         # only 4 possibles actions
-        while response not in range(1,5):
+        while response not in range(1, 5):
             self.__clear()
             self.menu.main_menu()
             response = int(input("Sélectionnez une action (1 à 4): ") or 0)
         actions = {
             1: show.select_category_menu,
             2: show.display_recorded_substitutes,
-            3: show.reinitialisation_BDD_OFF,
+            3: show.reinitialisation_database,
             4: show.quit_program
             }
         # the previous choice triggers one of 4 actions
@@ -57,40 +60,42 @@ class Show(Initialise_database):
 
     def select_category_menu(self):
         """ displays all categories from which
-            the user must choose one  
+            the user must choose one
         """
         self.__clear()
         # displays all categories
         self.menu.category_menu(CATEGORIES)
         response = int(input("Sélectionnez une catégorie de produits: ") or 0)
-        while response not in range(1,6):
+        while response not in range(1, 6):
             self.__clear()
             self.menu.category_menu(CATEGORIES)
-            response = int(input("Sélectionnez une catégorie de produits (1 à 5): ") or 0)
-        # save the chosen category 
+            response = int(input("Sélectionnez une catégorie "
+                                 "de produits (1 à 5): ") or 0)
+        # save the chosen category
         self.selected_category_id = response
-        # launches the display of all the products of the chosen category 
+        # launches the display of all the products of the chosen category
         self.select_product_of_category()
 
     def select_product_of_category(self):
         """ displays all products of the category
-            from which the user must choose one product  
+            from which the user must choose one product
         """
         # loads all products of selected category_id
-        products_of_category = self.request_sql.loads_products_of_category(self.selected_category_id)
+        products_of_category = self.request_sql.loads_products_of_category(
+                                                self.selected_category_id)
         # number of products loaded
-        PRODUCTS_NB  = len(products_of_category)
+        prod_nb = len(products_of_category)
         # displays products of category...
         self.menu.display_products_of_category(products_of_category)
         # ... and asks to select one of them
         response = int(input("Sélectionnez un produit : ") or 0)
-        while response not in range(1, PRODUCTS_NB +1):
+        while response not in range(1, prod_nb + 1):
             self.__clear()
             self.menu.display_products_of_category(products_of_category)
-            response = int(input(f"Sélectionnez un produit (1 à {PRODUCTS_NB }): ") or 0)
-        # save the chosen product 
+            response = int(input(f"Sélectionnez un produit (1 à {prod_nb}) : ") or 0)
+        # save the chosen product
         self.selected_product = products_of_category[response-1]
-        # launches the display of chosen product as well as the possible substitutes 
+        # launches the display of chosen product as well as the possible substitutes
         self.select_find_substitut()
 
     def select_find_substitut(self):
@@ -102,12 +107,13 @@ class Show(Initialise_database):
         # displays details of the product selected
         self.menu.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS)
         response = int(input("Sélectionnez une option (1- chercher un substitut;"
-                        " 2- retour au menu principal; 3- quitter l'application) : ") or 0)
+                             " 2- retour au menu principal; 3- quitter l'application) : ") or 0)
         while response not in range(1, 4):
             self.__clear()
             self.menu.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS)
             response = int(input("Sélectionnez une option (1- chercher un substitut;"
-                        " 2- retour au menu principal; 3- quitter l'application) : ") or 0)
+                                 " 2- retour au menu principal; "
+                                 "3- quitter l'application) : ") or 0)
         actions = {1: self.select_substitute_of_product, 2: self.main_menu, 3: self.quit_program}
         # launches action chosen
         actions[response]()
@@ -118,7 +124,7 @@ class Show(Initialise_database):
         substitutes_liste = self.tri_bulles(substitutes_list, 4)
         results_list = []
         # saves only the substitutes whose nutriscore is lower than 'nutri_test'
-        for data in substitutes_list:
+        for data in substitutes_liste:
             if data[4] <= nutri_test:
                 results_list.append(data)
         return results_list
@@ -134,13 +140,12 @@ class Show(Initialise_database):
         substitutes_list = self.test_useful_substitutes(substitutes_list, nutri_test)
         # for remove the substitute identical to the product
         for i in range(len(substitutes_list)):
-            # if a substitute is identical to the product 
+            # if a substitute is identical to the product
             if substitutes_list[i][0] == self.selected_product[0]:
                 substitute_index = i
-        # removes the substitute identical to the product 
+        # removes the substitute identical to the product
         del substitutes_list[substitute_index]
         return substitutes_list
-
 
     def load_substitutes_of_product(self):
         """ loads only the good substitutes of the product selected """
@@ -169,18 +174,23 @@ class Show(Initialise_database):
         self.menu.display_details_of_substitute(self.selected_substitute, NAME_OF_PRODUCT_FIELDS)
 
     def select_substitute_of_product(self):
-        """  """
+        """
+            displays a product and all her possible substitutes
+            and asks to chose one of them
+        """
         # loads list of substitutes of product in substitutes_list
         substitutes_list = self.load_substitutes_of_product()
         # numbers of finded substitutes
         substitutes_nb = len(substitutes_list)
-        # asks to choose a substitute among those found 
+        # asks to choose a substitute among those found
         self.display_product_and_substitutes(substitutes_list)
-        response = int(input("Sélectionnez un substitut (ou '0' pour revenir au menu) : ") or 9999)
+        response = int(input("Sélectionnez un substitut "
+                             "(ou '0' pour revenir au menu) : ") or 9999)
         while response not in range(substitutes_nb + 1):
             # asks to choose a substitute among those found
             self.display_product_and_substitutes(substitutes_list)
-            response = int(input("Sélectionnez un substitut (ou '0' pour revenir au menu) : ") or 9999)
+            response = int(input("Sélectionnez un substitut "
+                                 "(ou '0' pour revenir au menu) : ") or 9999)
         # if response=0 then back to teh main menu
         if response == 0:
             self.main_menu()
@@ -211,18 +221,20 @@ class Show(Initialise_database):
         # if user don't want record the substitute
         else:
             self.main_menu()
-        
+
     def exist_in_substitutes_category(self):
         """ tests if 'self.selected_substitute' already exists in Substitutes table
             In reception : nothing
-            On return    : 'True' if selected substitute already exists else 'False' 
+            On return    : 'True' if selected substitute already exists else 'False'
         """
         # loads all substitutes recorded in table 'Substitutes'
         substitutes_recorded_dico = self.request_sql.load_recorded_substitutes()
         # search duplicate of (origin_id, substitut_id)
         presence = False
         for product in substitutes_recorded_dico:
-            if (product == self.selected_product[0]) and (self.selected_substitute[0] in substitutes_recorded_dico[product]):
+            if (product == self.selected_product[0]) \
+                and (self.selected_substitute[0] \
+                in substitutes_recorded_dico[product]):
                 presence = True
         return presence
 
@@ -231,21 +243,24 @@ class Show(Initialise_database):
             registered, offers to choose another """
         # displays that the substitute is already registered
         self.menu.display_already_record(self.selected_product, self.selected_substitute)
-        response = input("Voulez-vous rechercher un autre substitut au produit ? (O/N) : ").upper()
+        response = input("Voulez-vous rechercher un autre "
+                         "substitut au produit ? (O/N) : ").upper()
         while response not in ['O', 'N']:
             # displays that the substitute is already registered
             self.menu.display_already_record(self.selected_product, self.selected_substitute)
-            response = input("Voulez-vous rechercher un autre substitut au produit ? (O/N) : ").upper()
+            response = input("Voulez-vous rechercher un autre "
+                             "substitut au produit ? (O/N) : ").upper()
         # offers to choose another substitute
         if response == 'O':
             self.select_substitute_of_product()
         else:
-            self.main_menu()            
+            self.main_menu()
 
     def record_selected_substitute(self):
         """ records the substitute chosen by USER """
         # self.__clear()
-        self.filling.fill_substitute_table(self.selected_product[0], self.selected_substitute[0])
+        self.filling.fill_substitute_table(self.selected_product[0],
+                                           self.selected_substitute[0])
         print("Enregistrement du substitut effectué...")
         input("")
         self.main_menu()
@@ -256,14 +271,15 @@ class Show(Initialise_database):
         substitutes_recorded_dico = self.request_sql.load_recorded_substitutes()
         # displays name and brand of each product with her substitute(s)
         self.__clear()
-        # if no substitute has been registered 
+        # if no substitute has been registered
         if len(substitutes_recorded_dico) == 0:
             print()
             input(" Aucun substitut n'a été enregistré dans la base de données !")
             self.main_menu()
         else:
             # displays the substituts registered for each product
-            print("Affichage des substituts enregistrés pour chaque produit :"), print()
+            print("Affichage des substituts enregistrés pour chaque produit :")
+            print()
             # substitutes_recorded_dico --> (product_id, substitute_id)
             for product_id in substitutes_recorded_dico:
                 # displays 'name' and 'brand' of one product
@@ -277,25 +293,25 @@ class Show(Initialise_database):
             input("(appuyez sur une touche pour revenir au menu principal...)")
             self.main_menu()
 
-    def reinitialisation_BDD_OFF(self):
+    def reinitialisation_database(self):
         """ drop all tables of database
             then recreate and fill them  """
         self.__clear()
         print("reinitialisation de la base de données en cours...")
         # drop all tables of database
-        self.tables.drop_all_tables_BDD_OFF()
+        self.tables.drop_all_tables_database()
         # recreate all tables of database
-        self.tables.create_all_tables_BDD_OFF()
+        self.tables.create_all_tables_database()
         # fills Category's table
-        self.filling.fill_table_Category(CATEGORIES)
+        self.filling.fill_table_category(CATEGORIES)
         for catg_id in CATEGORIES:
             # get the products of a category in the API
             infos_of_products = self.request_api.get_products_of_category(
-                    CATEGORIES[catg_id], FIELDS_OF_PRODUCTS, PRODUCTS_NB , URL)
+                    CATEGORIES[catg_id], FIELDS_PRODUCTS_API, PRODUCTS_NB, URL)
             # delete page break "\n" and limits length of "ingredients"
             infos_of_products = self.clean_request_api(infos_of_products)
             # and records datas in Product table
-            self.filling.fill_table_Product(catg_id, infos_of_products)
+            self.filling.fill_table_product(catg_id, infos_of_products)
         # at the end return to the main menu
         self.main_menu()
 
@@ -304,7 +320,7 @@ class Show(Initialise_database):
             cleans items of api's request
             In reception : list of product dictionaries like...
             [{'name': 'TUC', 'brand': 'LU'...}, {'name': 'Gazpacho'...}]
-            On return    : same list of dictionaries but cleaned 
+            On return    : same list of dictionaries but cleaned
         """
         for info in infos_of_products:
             for data in info:
@@ -325,7 +341,7 @@ class Show(Initialise_database):
                 info['nutrition_grade_fr'] = str(info['nutrition_grade_fr']).replace("'", " ")
                 info['ingredients_text_fr'] = str(info['ingredients_text_fr']).replace("'", " ")
                 info['stores'] = str(info['stores']).replace("'", " ")
-            except KeyError as msg:
+            except KeyError:
                 pass
         return infos_of_products
 
@@ -334,12 +350,11 @@ class Show(Initialise_database):
         self.__clear()
         print('Arrêt du programme demandé...')
         print()
-        quit()
-        print("quit_program")
-
+        sys.exit()
 
     def tri_bulles(self, my_liste, column):
-        for i in range (len(my_liste)-1,0, -1):
+        """ bubble sorting method """
+        for i in range (len(my_liste)-1, 0, -1):
             for j in range(i):
                 if my_liste[j][column]>my_liste[j+1][column]:
                     # on inverse les éléments de la liste situés aux index j et j+1
@@ -347,16 +362,10 @@ class Show(Initialise_database):
         return my_liste
 
     def __clear(self):
-	    # for windows 
-	    if name == 'nt': 
-	        _ = system('cls') 
-	  
-	    # for mac and linux
-	    else: 
-	        _ = system('clear')
+        """ Clear screen """
+        os.system('cls||clear')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     show = Show()
     show.main_menu()
-    
