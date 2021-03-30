@@ -1,3 +1,4 @@
+""" This module is used to fill the tables of database """
 # coding: utf-8
 from Database.init_database import Initialise_database
 
@@ -7,7 +8,7 @@ class Filling(Initialise_database):
 
     def __init__(self):
         Initialise_database.__init__(self)
-    
+
     def fill_substitute_table(self, original_id, substitute_id):
         """ Inserts the substitute of a product in database BDD_OFF
             In reception : product_id and her substitute_id
@@ -17,8 +18,8 @@ class Filling(Initialise_database):
                 VALUES ('{original_id}', '{substitute_id}')"
         self.cursor.execute(query)
         self.cnx.commit()
-    
-    def fill_table_Category(self, categories):
+
+    def fill_table_category(self, categories):
         """ Insertion of the types of categories in database BDD_OFF
         (Snacks salés, Gâteaux, Sodas...) """
         # for each category of products
@@ -27,10 +28,12 @@ class Filling(Initialise_database):
             self.cursor.execute(query)
             self.cnx.commit()
 
-    def fill_table_Product(self, catg_id, infos_of_products):
+    def fill_table_product(self, catg_id, infos_of_products):
         """ For each category of products,
-            fills the 'Product' table of BDD_OFF
-            with infos_of_products
+            fill in the 'Product' table of BDD_OFF using
+            the list of 'infos_of_products' dictionaries
+            (each 'info' is a dictionary of the details of a product)
+            like {'product_name_fr': 'Gazpacho', 'brands': 'Alvalle'...}
         """
         # selects only usables informations
         for info in infos_of_products:
@@ -53,7 +56,7 @@ class Filling(Initialise_database):
                                 '{info['stores']}', '{catg_id}')"
                     self.cursor.execute(query)
                     self.cnx.commit()
-            except KeyError as msg:
+            except KeyError:
                 pass
 
 
