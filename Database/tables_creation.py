@@ -1,5 +1,5 @@
+""" This module is used to creatye and drop the tables of database """
 # coding: utf-8
-import mysql.connector
 from Database.init_database import Initialise_database
 
 
@@ -11,7 +11,7 @@ class Tables(Initialise_database):
         Initialise_database.__init__(self)
 
 
-    def drop_all_tables_BDD_OFF(self):
+    def drop_all_tables_database(self):
         """ drop tables Category, Product and Substitutes if exist """
         # deactivates the FOREIGN_KEYs to permit to drop all tables
         query = " SET FOREIGN_KEY_CHECKS = 0 "
@@ -30,14 +30,14 @@ class Tables(Initialise_database):
         self.cursor.execute(query)
 
 
-    def create_all_tables_BDD_OFF(self):
+    def create_all_tables_database(self):
         """ creation of tables Category, Product and Substitutes """
         # creation of Category TABLE
         query = " CREATE TABLE Category (id INT AUTO_INCREMENT, \
-            name VARCHAR(100) NOT NULL, \
+            name VARCHAR(100) NOT NULL UNIQUE, \
             PRIMARY KEY (id) ) \
             ENGINE = InnoDB "
-        self.cursor.execute(query)                      
+        self.cursor.execute(query)
         # creation of Product TABLE
         query = " CREATE TABLE IF NOT EXISTS BDD_OFF.Product ( \
             id INT NOT NULL AUTO_INCREMENT, \
