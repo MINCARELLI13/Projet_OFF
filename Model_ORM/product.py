@@ -1,5 +1,5 @@
 # coding: utf-8
-from ORM.model import Model
+from Model_ORM.model import Model
 
 
 class Product(Model):
