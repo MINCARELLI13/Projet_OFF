@@ -4,10 +4,10 @@ from Config.config import CATEGORIES, FIELDS_PRODUCTS_API, PRODUCTS_NB, URL, FIE
 from Database.init_database import Initialise_database
 from Database.sql_requests import Request_Sql
 from API.requests_api import RequestApi
-from ORM.category import Category
-from ORM.product import Product
-from ORM.substitute import Substitute
-from ORM.model import Model
+from Model_ORM.category import Category
+from Model_ORM.product import Product
+from Model_ORM.substitute import Substitute
+from Model_ORM.model import Model
 
 
 class Fill(Initialise_database):
