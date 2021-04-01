@@ -28,44 +28,22 @@ class Request_Sql(Initialise_database):
             In reception : nothing
             On return    : dictionnary for which key = product_id and values = substitutes_id
             like {1: [6], 32: [31, 38], 34: [31, 33, 38, 39]} """
-        # query = f"SELECT original_id, substitut_id FROM Substitutes"
-        query = f"SELECT Original.name, Original.brand, Substitut.name, Substitut.brand\
-                FROM Substitutes\
-                INNER JOIN Product AS Original     ON Original.id = Substitutes.original_id\
-                INNER JOIN Product As Substitut    ON Substitut.id = Substitutes.substitut_id"
-
+        # option for request to table 'Substitutes' of database BDD_OFF
         option = "INNER JOIN Product AS Original     ON Original.id = Substitutes.original_id",\
                   "INNER JOIN Product As Substitut    ON Substitut.id = Substitutes.substitut_id"
-        my_list = Substitute().read_table(option)
-        print("my_list :")
-        print(my_list)
-        input("")
-        quit()
-        self.cursor.execute(query)
-        # sets results in dictionnary "substitutes_recorded_dico"
+        # SEND REQUEST to table 'Substitutes'
+        my_cursor = Substitute().read_table(option)
         substitutes_recorded_dico = {}
-        # groups all substitutes by product in the dictionnary 'substitutes_recorded_dico'
-        for curseur in self.cursor:
-            # if product_id is already in the dictionnary...
+        # puts results in dictionnary "substitutes_recorded_dico"
+        for curseur in my_cursor:
+            # if (Product.name, Product.brand) exists already in the dictionnary...
             if ((curseur[0],curseur[1]) in substitutes_recorded_dico):
                 # ...adds other substitute
                 substitutes_recorded_dico[(curseur[0],curseur[1])] = substitutes_recorded_dico[(curseur[0],curseur[1])] + [(curseur[2], curseur[3])]
             else:
-                # else creates new key (= product_id)
+                # else creates new key (= product.name, product.brand)
                 substitutes_recorded_dico[(curseur[0], curseur[1])] = [(curseur[2], curseur[3])]
-        # print("substitutes_recorded_dico :", substitutes_recorded_dico)
         return substitutes_recorded_dico
-
-    def get_name_of_product_id(self, product_id):
-        """ gets name and brand of product with her product_id
-            In reception : receives the 'id' of one product
-            On return    : return a tuple (name, brand) of this product
-                            like ('Gazpacho', 'Alvalle')
-        """
-        query = f"SELECT name, brand FROM Product WHERE id = '{product_id}'"
-        self.cursor.execute(query)
-        product = self.cursor.fetchone()
-        return product[0] + " (" + product[1] + ")"
 
 
 if __name__=='__main__':
