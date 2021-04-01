@@ -84,7 +84,6 @@ class Control(Initialise_database):
             from which the user must choose one product
         """
         # loads all products of selected category_id
-        #products_of_catg = read_table(self, *catg_id)
         products_of_catg = self.request_sql.loads_products_of_category(
                             self.selected_category_id)
         # number of products loaded
@@ -182,6 +181,9 @@ class Control(Initialise_database):
         """ keeps only the substitutes whose nutriscore
             is lower than that of the product and drop
             the substitute identical to the product
+            In reception : list of substitutes
+            like -> [(32, 'Gazpacho', 'Alvalle',...),...]
+            On return    : list of substitutes
         """
         # gets nutrigrade of selected product to be the 'nutri_test'
         nutri_test = self.selected_product[4]
@@ -197,12 +199,16 @@ class Control(Initialise_database):
         return substitutes_list
 
     def test_useful_substitutes(self, substitutes_list, nutri_test):
-        """ return the substitutes whose nutriscore is lower than a nutriscore_test """
-        # sorts by nutrigrade value
-        substitutes_liste = self.tri_bulles(substitutes_list, 4)
+        """ return the substitutes whose nutriscore
+            is lower than a nutriscore_test
+            In reception : list of substitutes
+            like -> [(32, 'Gazpacho', 'Alvalle',...),...]
+                           nutriscore test like 'a'
+            On return    : list of substitutes
+        """
         results_list = []
         # saves only the substitutes whose nutriscore is lower than 'nutri_test'
-        for data in substitutes_liste:
+        for data in substitutes_list:
             if data[4] <= nutri_test:
                 results_list.append(data)
         return results_list
@@ -293,15 +299,6 @@ class Control(Initialise_database):
         self.filling.reinitialisation_database()
         self.main_menu()
 
-    def tri_bulles(self, my_liste, column):
-        """ bubble sorting method """
-        for i in range (len(my_liste)-1, 0, -1):
-            for j in range(i):
-                if my_liste[j][column]>my_liste[j+1][column]:
-                    # on inverse les éléments de la liste situés aux index j et j+1
-                    my_liste[j], my_liste[j+1] = my_liste[j+1], my_liste[j]
-        return my_liste
-
     def quit_program(self):
         """ end of program """
         self.__clear()
@@ -317,5 +314,3 @@ class Control(Initialise_database):
 if __name__ == '__main__':
     control = Control()
     control.main_menu()
-
-
