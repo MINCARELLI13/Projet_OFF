@@ -5,7 +5,7 @@ import sys
 from Config.config import CATEGORIES, NAME_OF_PRODUCT_FIELDS,\
         FIELDS_SQL_API, URL, FIELDS_PRODUCTS_API, PRODUCTS_NB
 from Database.init_database import Initialise_database
-from Database.sql_requests import Request_Sql
+from Database.new_sql_requests import Request_Sql
 from API.requests_api import RequestApi
 from View.menu import Menu
 from new_filling import Fill
@@ -84,8 +84,9 @@ class Control(Initialise_database):
             from which the user must choose one product
         """
         # loads all products of selected category_id
+        #products_of_catg = read_table(self, *catg_id)
         products_of_catg = self.request_sql.loads_products_of_category(
-                                                self.selected_category_id)
+                            self.selected_category_id)
         # number of products loaded
         prod_nb = len(products_of_catg)
         # displays products of category...
