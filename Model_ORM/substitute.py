@@ -1,5 +1,5 @@
 # coding: utf-8
-from ORM.model import Model
+from Model_ORM.model import Model
 
 
 class Substitute(Model):
@@ -22,3 +22,5 @@ class Substitute(Model):
                                 REFERENCES BDD_OFF.Product (id) \
                                 ON DELETE NO ACTION \
                                 ON UPDATE NO ACTION"
+        self.columns_recorded = ['Original.name', 'Original.brand',
+                                 'Substitut.name', 'Substitut.brand']
