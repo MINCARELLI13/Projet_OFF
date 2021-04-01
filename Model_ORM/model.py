@@ -9,12 +9,18 @@ class Model(Initialise_database):
     def __init__(self):
         Initialise_database.__init__(self)
 
-    def read_table(self, *catg_id):
+    def read_table(self, *option):
         """ reads the items contains in the table """
-        query = " SELECT " + ",".join(self.columns_read)	# "id, name, brand, url, nutriscore, ingredients, stores, category_id"
-        query += " FROM " + self.table					    # "Product"
-        if catg_id:
-            query += " WHERE category_id=" + str(catg_id[0]) # "category_id='{catg_id}' "
+        if isinstance(option[0], tuple):
+            query = " SELECT " + ",".join(self.columns_recorded)
+        else:
+            query = " SELECT " + ",".join(self.columns_read)
+        query += " FROM " + self.table + " "
+        if option:
+            if isinstance(option[0], int):
+                query += " WHERE category_id=" + str(option[0])
+            elif isinstance(option[0], tuple):
+                query += option[0][0] + " " + option[0][1]
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
