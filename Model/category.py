@@ -11,6 +11,6 @@ class Category(RequestSql):
         self.table = "Category"
         self.columns_read = ['id', 'name']
         self.columns_update = ['name']
-        self.columns_create =  "id INT AUTO_INCREMENT,\
-                                name VARCHAR(100) NOT NULL UNIQUE,\
-                                PRIMARY KEY (id)"
+        self.columns_create = "id INT AUTO_INCREMENT,\
+                              name VARCHAR(100) NOT NULL UNIQUE,\
+                              PRIMARY KEY (id)"
