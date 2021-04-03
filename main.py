@@ -4,6 +4,7 @@ from Controller.controller_main import Control
 
 
 class Main:
+    """ launches the main controller file """
 
     def __init__(self):
         self.control = Control()
