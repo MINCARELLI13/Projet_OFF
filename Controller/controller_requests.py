@@ -13,7 +13,7 @@ class Request:
 
     def loads_products_of_category(self, catg_id):
         """ loads all products from category_id
-            In reception : the id of chosen category 
+            In reception : the id of chosen category
             On return    : list of tuple like...
             [(31, 'Gazpacho', 'Alvalle', ...), (32, 'Le Ravioli', 'Panzani', ...)]
         """
@@ -33,9 +33,11 @@ class Request:
         # puts results in dictionnary "substitutes_recorded_dico"
         for curseur in my_cursor:
             # if (Product.name, Product.brand) exists already in the dictionnary...
-            if ((curseur[0],curseur[1]) in substitutes_recorded_dico):
+            if (curseur[0],curseur[1]) in substitutes_recorded_dico:
                 # ...adds other substitute
-                substitutes_recorded_dico[(curseur[0],curseur[1])] = substitutes_recorded_dico[(curseur[0],curseur[1])] + [(curseur[2], curseur[3])]
+                substitutes_recorded_dico[(curseur[0],curseur[1])] = \
+                    substitutes_recorded_dico[(curseur[0],curseur[1])] \
+                    + [(curseur[2], curseur[3])]
             else:
                 # else creates new key (= product.name, product.brand)
                 substitutes_recorded_dico[(curseur[0], curseur[1])] = [(curseur[2], curseur[3])]
@@ -58,7 +60,7 @@ class Request:
     # def record_selected_substitute(self):
     def fill_table_substitutes(self, product_id, substitut_id):
         """ records the substitute chosen by USER """
-        # data formatting 
+        # data formatting
         values_dico = {'original_id': str(product_id), 'substitut_id': str(substitut_id)}
         # recording in database
         Substitute().update_table(values_dico)
@@ -75,12 +77,14 @@ class Request:
             categorie.update_table(dico)
 
     def fill_table_product(self):
-        """ 
+        """
             fills table 'Product' with items loaded from API
             {'product_name_fr': 'Gazpacho',  'brands': 'Alvalle', ...}
         """
         produit = Product()
-        keys_list = ['product_name_fr', 'brands', 'url', 'nutrition_grade_fr', 'ingredients_text_fr', 'stores']
+        keys_list = ['product_name_fr', 'brands', 'url',
+                     'nutrition_grade_fr', 'ingredients_text_fr',
+                     'stores']
         for catg_id in CATEGORIES:
             # get the products of a category in the API
             request_api = RequestApi()
@@ -91,10 +95,10 @@ class Request:
             # product = {'product_name_fr': 'Gazpacho',  'brands': 'Alvalle', ...}
             for product in list_of_dicos:
                 dico = {}
-                # if no product is empty 
+                # if no product is empty
                 # and each key has a value
                 # and all keys are present
-                # and no product with the name 'Chargement' 
+                # and no product with the name 'Chargement'
                 if product\
                     and self.is_dict_full(product)\
                     and self.have_all_keys(product, keys_list)\
@@ -123,7 +127,7 @@ class Request:
 
     def have_all_keys(self, dico, keys_list):
         """ checks that each result of the API request
-            (in 'dico') has all the expected keys (=fields) 
+            (in 'dico') has all the expected keys (=fields)
             (= 'name', 'brand', 'url', ...)
             In reception : dico = dict of results API
                            keys_list = list of expected keys
