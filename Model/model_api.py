@@ -6,7 +6,8 @@ import requests
 class RequestApi:
     """ contains all the requests made on OpenFoodFacts's API """
 
-    def get_products_of_category(self, catg_name, fields_products_api, products_nb, url):
+    def get_products_of_category(self, catg_name, fields_products_api,
+                                 products_nb, url):
         """
         For each category of products makes a request to OpenFoodFacts API
         In reception : all parameters to make request to API's OFF
