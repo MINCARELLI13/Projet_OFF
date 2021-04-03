@@ -9,13 +9,13 @@ class InitialiseDatabase:
 
     def __init__(self):
         self.cnx = mysql.connector.connect(
-            user = USER,
-            password = PASSWORD,
-            host = HOST,
-            database = DATABASE
-            )
+                                            user=USER,
+                                            password=PASSWORD,
+                                            host=HOST,
+                                            database=DATABASE
+                                            )
         self.cursor = self.cnx.cursor()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     pass
