@@ -18,7 +18,9 @@ class Request:
             On return    : list of tuple like...
             [(31, 'Gazpacho', 'Alvalle', ...), (32, 'Le Ravioli', 'Panzani', ...)]
         """
-        return Product().read_table(catg_id)
+        product = Product()
+        product.catg = catg_id
+        return product.read_table()
 
     def load_recorded_substitutes(self):
         """ gets all substituts of database BDD_OFF
@@ -26,13 +28,9 @@ class Request:
             On return    : dictionnary for which key = product_id
                                         and values = substitutes_id
             like {1: [6], 32: [31, 38], 34: [31, 33, 38, 39]} """
-        # option for request to table 'Substitutes' of database BDD_OFF
-        option = "INNER JOIN Product AS Original" + \
-                 " ON Original.id = Substitutes.original_id",\
-                 "INNER JOIN Product As Substitut" + \
-                 " ON Substitut.id = Substitutes.substitut_id"
         # SEND REQUEST to table 'Substitutes'
-        my_cursor = Substitute().read_table(option)
+        my_cursor = Substitute().read_table()
+        # variable intended to store recorded substitutes
         substitutes_recorded_dico = {}
         # puts results in dictionnary "substitutes_recorded_dico"
         for curseur in my_cursor:
