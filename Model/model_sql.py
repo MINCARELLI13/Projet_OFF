@@ -1,14 +1,15 @@
+""" This module is used to search products and substitutes database """
 # coding: utf-8
-from Model.init_database import Initialise_database
+from Model.init_database import InitialiseDatabase
 
 
-class RequestSql(Initialise_database):
-# class Model(Initialise_database):
+class RequestSql(InitialiseDatabase):
     """ manage all procedure of database BDD_OFF """
+
     Tables_list = ['Category', 'Product', 'Substitutes']
 
     def __init__(self):
-        Initialise_database.__init__(self)
+        InitialiseDatabase.__init__(self)
 
     def read_table(self, *option):
         """ reads the items contains in the table """

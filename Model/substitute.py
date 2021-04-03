@@ -1,8 +1,10 @@
+""" parameters of table 'Substitutes' on database BDD_OFF """
 # coding: utf-8
 from Model.model_sql import RequestSql
 
 
 class Substitute(RequestSql):
+    """ defines parameters of table 'Substitutes' """
 
     def __init__(self):
         RequestSql.__init__(self)

@@ -1,14 +1,18 @@
+""" parameters of table 'Product' on database BDD_OFF """
 # coding: utf-8
 from Model.model_sql import RequestSql
 
 
 class Product(RequestSql):
+    """ defines parameters of table 'Product' """
 
     def __init__(self):
         RequestSql.__init__(self)
         self.table = "Product"
-        self.columns_read = ['id', 'name', 'brand', 'url', 'nutriscore', 'ingredients', 'stores', 'category_id']
-        self.columns_update = ['name', 'brand', 'url', 'nutriscore', 'ingredients', 'stores', 'category_id']
+        self.columns_read = ['id', 'name', 'brand', 'url', 'nutriscore',
+                             'ingredients', 'stores', 'category_id']
+        self.columns_update = ['name', 'brand', 'url', 'nutriscore',
+                               'ingredients', 'stores', 'category_id']
         self.clauses_select = "WHERE category_id="
         self.columns_create =  "id INT NOT NULL AUTO_INCREMENT, \
                                 name VARCHAR(100) NOT NULL, \

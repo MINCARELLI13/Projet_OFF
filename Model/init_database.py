@@ -1,9 +1,11 @@
+""" Initializes the connexion on database 'BDD_OFF' """
 # coding: utf-8
 import mysql.connector
 from Config.config import USER, PASSWORD, HOST, DATABASE
 
 
-class Initialise_database:
+class InitialiseDatabase:
+    """ Initializes the connexion """
 
     def __init__(self):
         self.cnx = mysql.connector.connect(

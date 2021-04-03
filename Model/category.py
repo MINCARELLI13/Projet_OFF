@@ -1,8 +1,10 @@
+""" parameters of table 'Category' on database BDD_OFF """
 # coding: utf-8
 from Model.model_sql import RequestSql
 
 
 class Category(RequestSql):
+    """ defines parameters of table 'Category' """
 
     def __init__(self):
         RequestSql.__init__(self)
