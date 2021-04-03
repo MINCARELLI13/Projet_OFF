@@ -33,8 +33,8 @@ class RequestSql(InitialiseDatabase):
         # values to set in columns of table
         values = ",".join(["'" + values_dico[key] + "'" for key in values_dico])
         if category_id:
-            values +=  ',' + str(category_id[0])
-        query = " INSERT INTO " + self.table +  columns + " VALUES (" + values + ")"
+            values += ',' + str(category_id[0])
+        query = " INSERT INTO " + self.table + columns + " VALUES (" + values + ")"
         self.cursor.execute(query)
         self.cnx.commit()
 
@@ -51,7 +51,7 @@ class RequestSql(InitialiseDatabase):
     def create_table(self):
         """ creation of tables Category, Product and Substitutes """
         query = " CREATE TABLE " + self.table + "(" + \
-                 self.columns_create + ")" + " ENGINE = InnoDB "
+                self.columns_create + ")" + " ENGINE = InnoDB "
         self.cursor.execute(query)
 
 
