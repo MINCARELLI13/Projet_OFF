@@ -1,10 +1,9 @@
 """ module Controller to link Model and View modules """
 # coding: utf-8
 import sys
-from Config.config import CATEGORIES, NAME_OF_PRODUCT_FIELDS,\
-        FIELDS_SQL_API, URL, FIELDS_PRODUCTS_API, PRODUCTS_NB
-from Controller.controller_requests import Request
+from Config.config import CATEGORIES, NAME_OF_PRODUCT_FIELDS
 from View.show import Show
+from Controller.controller_requests import Request
 
 
 class Control:
@@ -50,7 +49,7 @@ class Control:
         response = self.input_int("Sélectionnez une catégorie de produits : ")
         while response not in range(1, 6):
             self.show.category_menu(CATEGORIES)
-            response = self.input_int(f"Sélectionnez une catégorie de produits (1 à 5) : ")
+            response = self.input_int("Sélectionnez une catégorie de produits (1 à 5) : ")
         # save the chosen category
         self.selected_category_id = response
         # launches the display of all the products of the chosen category
@@ -103,12 +102,14 @@ class Control:
         substitutes_nb = len(substitutes_list)
         # asks to choose a substitute among those found
         self.display_product_and_substitutes(substitutes_list)
-        response = self.input_int("Sélectionnez un substitut (ou '0' pour revenir au menu) : ")
+        response = self.input_int("Sélectionnez un substitut "
+                                "(ou '0' pour revenir au menu) : ")
         while response not in range(substitutes_nb + 1):
             # displays the product and her substitutes
             self.display_product_and_substitutes(substitutes_list)
             # asks to choose a substitute among those found
-            response = self.input_int("Sélectionnez un substitut (ou '0' pour revenir au menu) : ")
+            response = self.input_int("Sélectionnez un substitut "
+                                      "(ou '0' pour revenir au menu) : ")
         # if response=0 then back to the main menu
         if response == 0:
             self.main_menu()
@@ -191,13 +192,12 @@ class Control:
         if response == 'O':
             # verifies if substitute is not already saved
             if self.substitute_already_recorded():
-            # if self.exist_in_substitutes_category():
                 # if already saved, proposes to choose another
                 self.propose_another_substitut()
             else:
-                # else SAVES the substitute 
-                self.request.fill_table_substitutes(self.selected_product[0], self.selected_substitute[0])
-                # self.filling.fill_table_substitutes(self.selected_product[0], self.selected_substitute[0])
+                # else SAVES the substitute
+                self.request.fill_table_substitutes(self.selected_product[0],\
+                                                    self.selected_substitute[0])
                 # then back to main menu
                 self.main_menu()
                     # self.record_selected_substitute()
@@ -216,6 +216,7 @@ class Control:
         presence = False
         # substitute_name_brand = ('Gazpacho', 'Alvalle')
         substitute_name_brand = (self.selected_substitute[1], self.selected_substitute[2])
+        # tests if substitute is already recorded
         for product in substitutes_recorded_dico:
             if (product[0] == self.selected_product[1]) and\
                 (substitute_name_brand in substitutes_recorded_dico[product]):
@@ -246,6 +247,7 @@ class Control:
         substitutes_recorded_dico = self.request.load_recorded_substitutes()
         # displays name and brand of each product with her substitute(s)
         self.show.display_recorded_substitutes(substitutes_recorded_dico)
+        # back to main menu
         self.main_menu()
 
     def reinitialisation_database(self):
@@ -256,6 +258,7 @@ class Control:
         self.main_menu()
 
     def input_int(self, message):
+        """ this is equivalent to doing int(input("...")) """
         try:
             response = int(input(message) or 99999)
         except ValueError:
