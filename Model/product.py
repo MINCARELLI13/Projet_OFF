@@ -9,6 +9,7 @@ class Product(RequestSql):
     def __init__(self):
         RequestSql.__init__(self)
         self.table = "Product"
+        self.catg = ""
         self.columns_read = ['id', 'name', 'brand', 'url', 'nutriscore',
                              'ingredients', 'stores', 'category_id']
         self.columns_update = ['name', 'brand', 'url', 'nutriscore',

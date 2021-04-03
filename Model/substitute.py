@@ -9,7 +9,8 @@ class Substitute(RequestSql):
     def __init__(self):
         RequestSql.__init__(self)
         self.table = "Substitutes"
-        self.columns_read = ['original_id', 'substitut_id']
+        self.columns_read = ['Original.name', 'Original.brand',
+                                 'Substitut.name', 'Substitut.brand']
         self.columns_update = ['original_id', 'substitut_id']
         self.columns_create = "original_id INT NOT NULL,\
                                 substitut_id INT NOT NULL,\
@@ -24,5 +25,7 @@ class Substitute(RequestSql):
                                 REFERENCES BDD_OFF.Product (id)\
                                 ON DELETE NO ACTION\
                                 ON UPDATE NO ACTION"
-        self.columns_recorded = ['Original.name', 'Original.brand',
-                                 'Substitut.name', 'Substitut.brand']
+        self.inner_join = "INNER JOIN Product AS Original \
+                          ON Original.id = Substitutes.original_id \
+                          INNER JOIN Product As Substitut \
+                          ON Substitut.id = Substitutes.substitut_id"

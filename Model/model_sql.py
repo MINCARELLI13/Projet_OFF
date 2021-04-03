@@ -11,18 +11,14 @@ class RequestSql(InitialiseDatabase):
     def __init__(self):
         InitialiseDatabase.__init__(self)
 
-    def read_table(self, *option):
+    def read_table(self):
         """ reads the items contains in the table """
-        if isinstance(option[0], tuple):
-            query = " SELECT " + ",".join(self.columns_recorded)
-        else:
-            query = " SELECT " + ",".join(self.columns_read)
+        query = " SELECT " + ",".join(self.columns_read)
         query += " FROM " + self.table + " "
-        if option:
-            if isinstance(option[0], int):
-                query += " WHERE category_id=" + str(option[0])
-            elif isinstance(option[0], tuple):
-                query += option[0][0] + " " + option[0][1]
+        if self.table == 'Substitutes':
+            query += self.inner_join
+        elif self.table == 'Product':
+            query += " WHERE category_id=" + str(self.catg)
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
