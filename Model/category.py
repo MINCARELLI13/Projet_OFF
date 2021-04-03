@@ -1,11 +1,11 @@
 # coding: utf-8
-from Model_ORM.model import Model
+from Model.model_sql import RequestSql
 
 
-class Category(Model):
+class Category(RequestSql):
 
     def __init__(self):
-        Model.__init__(self)
+        RequestSql.__init__(self)
         self.table = "Category"
         self.columns_read = ['id', 'name']
         self.columns_update = ['name']

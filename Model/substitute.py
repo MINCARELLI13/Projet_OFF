@@ -1,11 +1,11 @@
 # coding: utf-8
-from Model_ORM.model import Model
+from Model.model_sql import RequestSql
 
 
-class Substitute(Model):
+class Substitute(RequestSql):
 
     def __init__(self):
-        Model.__init__(self)
+        RequestSql.__init__(self)
         self.table = "Substitutes"
         self.columns_read = ['original_id', 'substitut_id']
         self.columns_update = ['original_id', 'substitut_id']
@@ -24,3 +24,4 @@ class Substitute(Model):
                                 ON UPDATE NO ACTION"
         self.columns_recorded = ['Original.name', 'Original.brand',
                                  'Substitut.name', 'Substitut.brand']
+                                 

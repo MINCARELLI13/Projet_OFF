@@ -1,8 +1,9 @@
 # coding: utf-8
-from Database.init_database import Initialise_database
+from Model.init_database import Initialise_database
 
 
-class Model(Initialise_database):
+class RequestSql(Initialise_database):
+# class Model(Initialise_database):
     """ manage all procedure of database BDD_OFF """
     Tables_list = ['Category', 'Product', 'Substitutes']
 
@@ -54,5 +55,4 @@ class Model(Initialise_database):
 
 
 if __name__ == '__main__':
-    model = Model()
-    model.drop_all_tables()
+    pass
