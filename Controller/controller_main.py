@@ -49,7 +49,8 @@ class Control:
         response = self.input_int("Sélectionnez une catégorie de produits : ")
         while response not in range(1, 6):
             self.show.category_menu(CATEGORIES)
-            response = self.input_int("Sélectionnez une catégorie de produits (1 à 5) : ")
+            response = self.input_int("Sélectionnez une catégorie"
+                                      " de produits (1 à 5) : ")
         # save the chosen category
         self.selected_category_id = response
         # launches the display of all the products of the chosen category
@@ -82,10 +83,12 @@ class Control:
             from which the user must choose one
         """
         # displays details of the product selected
-        self.show.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS)
+        self.show.display_details_of_product(
+            self.selected_product, NAME_OF_PRODUCT_FIELDS)
         response = input("Souhaitez-vous trouver un substitut ? (O/N) : ").upper()
         while response not in ['O', 'N']:
-            self.show.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS)
+            self.show.display_details_of_product(
+                self.selected_product, NAME_OF_PRODUCT_FIELDS)
             response = input("Souhaitez-vous trouver un substitut ? (O/N) : ").upper()
         actions = {'O': self.select_substitute_of_product, 'N': self.main_menu}
         # launches action chosen
@@ -102,8 +105,8 @@ class Control:
         substitutes_nb = len(substitutes_list)
         # asks to choose a substitute among those found
         self.display_product_and_substitutes(substitutes_list)
-        response = self.input_int("Sélectionnez un substitut "
-                                "(ou '0' pour revenir au menu) : ")
+        response = self.input_int("Sélectionnez un substitut"
+                                  " (ou '0' pour revenir au menu) : ")
         while response not in range(substitutes_nb + 1):
             # displays the product and her substitutes
             self.display_product_and_substitutes(substitutes_list)
@@ -122,7 +125,8 @@ class Control:
     def load_substitutes_of_product(self):
         """ loads only the 'good' substitutes of the product selected """
         # loads products of category_id from DATABASE (= substitutes)
-        substitutes_list = self.request.loads_products_of_category(self.selected_category_id)
+        substitutes_list = self.request.loads_products_of_category(
+                           self.selected_category_id)
         # selects only useful substituts and puts them in 'substitutes_list'
         substitutes_list = self.cleaning_of_substitutes(substitutes_list)
         return substitutes_list
@@ -131,7 +135,8 @@ class Control:
         """ displays a product and the finded substitutes for this product """
         # displays details of product to substitute
         title = "Produit à remplacer par un substitut : "
-        self.show.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS, title)
+        self.show.display_details_of_product(self.selected_product,
+                                             NAME_OF_PRODUCT_FIELDS, title)
         # displays all substitutes of product
         self.show.display_substitutes_of_product(substitutes_list)
 
@@ -139,9 +144,11 @@ class Control:
         """ displays a product and the selected substitute """
         # displays details of product to substitute
         title = "Produit à remplacer par un substitut : "
-        self.show.display_details_of_product(self.selected_product, NAME_OF_PRODUCT_FIELDS, title)
+        self.show.display_details_of_product(self.selected_product,
+                                             NAME_OF_PRODUCT_FIELDS, title)
         # displays details of product to substitute
-        self.show.display_details_of_substitute(self.selected_substitute, NAME_OF_PRODUCT_FIELDS)
+        self.show.display_details_of_substitute(self.selected_substitute,
+                                                NAME_OF_PRODUCT_FIELDS)
 
     def cleaning_of_substitutes(self, substitutes_list):
         """ keeps only the substitutes whose nutriscore
@@ -196,11 +203,10 @@ class Control:
                 self.propose_another_substitut()
             else:
                 # else SAVES the substitute
-                self.request.fill_table_substitutes(self.selected_product[0],\
+                self.request.fill_table_substitutes(self.selected_product[0],
                                                     self.selected_substitute[0])
                 # then back to main menu
                 self.main_menu()
-                    # self.record_selected_substitute()
         # if user don't want record the substitute
         else:
             self.main_menu()
@@ -215,11 +221,12 @@ class Control:
         # search duplicate of (origin_id, substitut_id)
         presence = False
         # substitute_name_brand = ('Gazpacho', 'Alvalle')
-        substitute_name_brand = (self.selected_substitute[1], self.selected_substitute[2])
+        substitute_name_brand = (self.selected_substitute[1],
+                                 self.selected_substitute[2])
         # tests if substitute is already recorded
         for product in substitutes_recorded_dico:
             if (product[0] == self.selected_product[1]) and\
-                (substitute_name_brand in substitutes_recorded_dico[product]):
+            (substitute_name_brand in substitutes_recorded_dico[product]):
                 presence = True
         return presence
 
@@ -227,12 +234,14 @@ class Control:
         """ in the event that a substitute is already
             registered, offers to choose another """
         # displays that the substitute is already registered
-        self.show.display_already_record(self.selected_product, self.selected_substitute)
+        self.show.display_already_record(self.selected_product,
+                                         self.selected_substitute)
         response = input("Voulez-vous rechercher un autre "
                          "substitut au produit ? (O/N) : ").upper()
         while response not in ['O', 'N']:
             # displays that the substitute is already registered
-            self.show.display_already_record(self.selected_product, self.selected_substitute)
+            self.show.display_already_record(self.selected_product,
+                                             self.selected_substitute)
             response = input("Voulez-vous rechercher un autre "
                              "substitut au produit ? (O/N) : ").upper()
         # offers to choose another substitute

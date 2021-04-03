@@ -1,6 +1,7 @@
 """ Manage all the requests of MySQL and API's OpenFoodFacts """
 # coding: utf-8
-from Config.config import CATEGORIES, FIELDS_PRODUCTS_API, PRODUCTS_NB, URL, FIELDS_SQL_API
+from Config.config import CATEGORIES, FIELDS_PRODUCTS_API,\
+                          PRODUCTS_NB, URL, FIELDS_SQL_API
 from Model.model_api import RequestApi
 from Model.category import Category
 from Model.product import Product
@@ -22,25 +23,29 @@ class Request:
     def load_recorded_substitutes(self):
         """ gets all substituts of database BDD_OFF
             In reception : nothing
-            On return    : dictionnary for which key = product_id and values = substitutes_id
+            On return    : dictionnary for which key = product_id
+                                        and values = substitutes_id
             like {1: [6], 32: [31, 38], 34: [31, 33, 38, 39]} """
         # option for request to table 'Substitutes' of database BDD_OFF
-        option = "INNER JOIN Product AS Original     ON Original.id = Substitutes.original_id",\
-                  "INNER JOIN Product As Substitut    ON Substitut.id = Substitutes.substitut_id"
+        option = "INNER JOIN Product AS Original" + \
+                 " ON Original.id = Substitutes.original_id",\
+                 "INNER JOIN Product As Substitut" + \
+                 " ON Substitut.id = Substitutes.substitut_id"
         # SEND REQUEST to table 'Substitutes'
         my_cursor = Substitute().read_table(option)
         substitutes_recorded_dico = {}
         # puts results in dictionnary "substitutes_recorded_dico"
         for curseur in my_cursor:
             # if (Product.name, Product.brand) exists already in the dictionnary...
-            if (curseur[0],curseur[1]) in substitutes_recorded_dico:
+            if (curseur[0], curseur[1]) in substitutes_recorded_dico:
                 # ...adds other substitute
-                substitutes_recorded_dico[(curseur[0],curseur[1])] = \
-                    substitutes_recorded_dico[(curseur[0],curseur[1])] \
+                substitutes_recorded_dico[(curseur[0], curseur[1])] = \
+                    substitutes_recorded_dico[(curseur[0], curseur[1])] \
                     + [(curseur[2], curseur[3])]
             else:
                 # else creates new key (= product.name, product.brand)
-                substitutes_recorded_dico[(curseur[0], curseur[1])] = [(curseur[2], curseur[3])]
+                substitutes_recorded_dico[(curseur[0], curseur[1])] \
+                                          = [(curseur[2], curseur[3])]
         return substitutes_recorded_dico
 
     def reinitialisation_database(self):
@@ -61,7 +66,8 @@ class Request:
     def fill_table_substitutes(self, product_id, substitut_id):
         """ records the substitute chosen by USER """
         # data formatting
-        values_dico = {'original_id': str(product_id), 'substitut_id': str(substitut_id)}
+        values_dico = {'original_id': str(product_id),
+                       'substitut_id': str(substitut_id)}
         # recording in database
         Substitute().update_table(values_dico)
 
@@ -138,5 +144,5 @@ class Request:
         return True
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     pass
