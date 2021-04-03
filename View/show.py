@@ -38,10 +38,10 @@ class Show:
             # substitutes_recorded_dico --> (product_id, substitute_id)
             for product in substitutes_recorded_dico:
                 # displays 'name' and 'brand' of one product
-                print("- " + product[0] + " (" +  product[1], ") :",  end=" ")
+                print("- " + product[0] + " (" +  product[1], ") :", end=" ")
                 # displays 'name' and 'brand' of product's substitutes
                 for substitut in substitutes_recorded_dico[product]:
-                    print(substitut[0] + " (" +  substitut[1], "), ",  end=" ")
+                    print(substitut[0] + " (" +  substitut[1], "), ", end=" ")
                 print()
                 print()
             print()
@@ -111,7 +111,7 @@ class Show:
                 print("-", substitute)
                 print()
         print()
-    
+
     def display_reinitialisation_database(self):
         """ displays the reinitialisation of the database  """
         self.__clear()
