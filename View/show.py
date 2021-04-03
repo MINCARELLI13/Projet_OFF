@@ -38,10 +38,10 @@ class Show:
             # substitutes_recorded_dico --> (product_id, substitute_id)
             for product in substitutes_recorded_dico:
                 # displays 'name' and 'brand' of one product
-                print("- " + product[0] + " (" +  product[1], ") :", end=" ")
+                print("- " + product[0] + " (" + product[1], ") :", end=" ")
                 # displays 'name' and 'brand' of product's substitutes
                 for substitut in substitutes_recorded_dico[product]:
-                    print(substitut[0] + " (" +  substitut[1], "), ", end=" ")
+                    print(substitut[0] + " (" + substitut[1], "), ", end=" ")
                 print()
                 print()
             print()
@@ -53,7 +53,7 @@ class Show:
         increment = 1
         for product in products_list:
             print("{}- {} de '{}' (nutriscore {}) : {}.".format(str(increment),
-                    product[1], product[2], product[4], product[5]))
+                  product[1], product[2], product[4], product[5]))
             increment = increment + 1
         print()
 
@@ -70,9 +70,10 @@ class Show:
         """ displays the substitutes found for a product """
         print('Substituts trouvés pour le produit ci-dessus :')
         increment = 1
-        for substitute in substitutes_list :
-            print("{}- {} de '{}' (nutriscore {}) : {}.".format(str(increment), substitute[1],
-                                    substitute[2], substitute[4], substitute[5]))
+        for substitute in substitutes_list:
+            print("{}- {} de '{}' (nutriscore {}) : {}.".format(
+                  str(increment), substitute[1], substitute[2],
+                  substitute[4], substitute[5]))
             increment += 1
         print()
 
@@ -91,10 +92,12 @@ class Show:
         On return	 : nothing
         """
         self.__clear()
-        print("\t ATTENTION : le substitut sélectionné a déjà été enregistré pour ce produit !")
+        print("\t ATTENTION : le substitut sélectionné"
+              "a déjà été enregistré pour ce produit !")
         print()
         # displays the product to substitut
-        print('Produit à remplacer par un substitut :', product[1], '(', product[2], ')')
+        print('Produit à remplacer par un substitut :',
+              product[1], '(', product[2], ')')
         print()
         # displays the substitut of product
         print('Substitut sélectionné :', substitute[1], '(', substitute[2], ')')
@@ -130,5 +133,5 @@ class Show:
         os.system('cls||clear')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     pass
