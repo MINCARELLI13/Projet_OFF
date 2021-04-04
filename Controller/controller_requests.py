@@ -77,7 +77,6 @@ class Request:
         for catg in CATEGORIES:
             dico = {}
             dico[catg] = CATEGORIES[catg]
-            # dico = {5: 'Plats préparés'}
             categorie.update_table(dico)
 
     def fill_table_product(self):
