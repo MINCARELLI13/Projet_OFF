@@ -1,7 +1,7 @@
 """ This module is used to manage products and substitutes database """
 # coding: utf-8
-from Model.init_database import InitialiseDatabase
 from Config.config import Tables_list
+from Model.init_database import InitialiseDatabase
 
 
 class RequestSql(InitialiseDatabase):
@@ -11,7 +11,7 @@ class RequestSql(InitialiseDatabase):
         InitialiseDatabase.__init__(self)
 
     def read_table(self):
-        """ 
+        """
             reads the items contains in a table
             reads each product or substitute
             one after the other
@@ -21,14 +21,14 @@ class RequestSql(InitialiseDatabase):
         query = " SELECT " + ",".join(self.columns_read)
         query += " FROM " + self.table + " "
         query += self.clauses
-        # to load products from a single category 
+        # to load products from a single category
         if self.table == 'Product':
             query += str(self.catg)
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
     def update_table(self, values_dico):
-        """ 
+        """
             records in the table the informations transmitted in 'values_dico'
             In reception : self.columns_update, values_dico, self.table
         """
@@ -51,7 +51,7 @@ class RequestSql(InitialiseDatabase):
             self.cursor.execute(query)
 
     def create_table(self):
-        """ 
+        """
             creation of tables Category, Product and Substitutes
             In reception : self.table, self.columns_create
         """
