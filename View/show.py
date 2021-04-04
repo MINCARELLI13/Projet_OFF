@@ -63,7 +63,13 @@ class Show:
         if title:
             print("Produit à remplacer par un substitut :")
         for i in range(1, 7):
-            print('  ', name_of_product_fields[i-1], ' :', product[i])
+            # if there are a lot of ingredients, cut the list in half
+            if (i == 5) and (len(product[i]) > 230):
+                print('  ', name_of_product_fields[i-1], ' :', product[i][0:230])
+                print('  ', product[i][230:460])
+            # else display all the ingredients on one line
+            else:
+                print('  ', name_of_product_fields[i-1], ' :', product[i])
         print()
 
     def display_substitutes_of_product(self, substitutes_list):
@@ -81,7 +87,13 @@ class Show:
         """ displays details of a 'substitute' """
         print("Substitut sélectionné pour le produit ci-dessus :")
         for i in range(1, 7):
-            print('  ', name_of_product_fields[i-1], ' :', substitute[i])
+            # if there are a lot of ingredients, cut the list in half
+            if (i == 5) and (len(substitute[i]) > 230):
+                print('  ', name_of_product_fields[i-1], ' :', substitute[i][0:230])
+                print('  ', substitute[i][230:460])
+            # else display all the ingredients on one line
+            else:
+                print('  ', name_of_product_fields[i-1], ' :', substitute[i])
         print()
 
     def display_already_record(self, product, substitute):
