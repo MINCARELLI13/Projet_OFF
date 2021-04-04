@@ -115,7 +115,9 @@ class Request:
                             dico[field] = product[FIELDS_SQL_API[field]]
                     except KeyError:
                         pass
-                    produit.update_table(dico, catg_id)
+                    # fields of product = (name, brand,... categoty_id)
+                    dico['category_id'] = str(catg_id)
+                    produit.update_table(dico)
 
     def is_dict_full(self, dico):
         """ checks that each key in the
