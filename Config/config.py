@@ -1,5 +1,8 @@
 # coding: utf-8
 
+""" list of all tables in the database  """
+Tables_list = ['Category', 'Product', 'Substitutes']
+
 """ Categories proposed to users """
 CATEGORIES = {1: 'Snacks salés', 2: 'Gâteaux',3: 'Sodas',4: 'Desserts glacés',5: 'Plats préparés'}
 
