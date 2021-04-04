@@ -142,8 +142,8 @@ class Control:
             self.show.display_substitutes_of_product(substitutes_list)
         # if no substitutes to propose
         else:
-             print("Aucun substitut n'a été trouvé pour le produit ci-dessus !")
-             print()
+            print("Aucun substitut n'a été trouvé pour le produit ci-dessus !")
+            print()
 
     def display_product_and_substitute(self):
         """ displays a product and the selected substitute """
