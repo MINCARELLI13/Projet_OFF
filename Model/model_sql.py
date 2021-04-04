@@ -1,35 +1,41 @@
-""" This module is used to search products and substitutes database """
+""" This module is used to manage products and substitutes database """
 # coding: utf-8
 from Model.init_database import InitialiseDatabase
+from Config.config import Tables_list
 
 
 class RequestSql(InitialiseDatabase):
     """ manage all procedure of database BDD_OFF """
 
-    Tables_list = ['Category', 'Product', 'Substitutes']
-
     def __init__(self):
         InitialiseDatabase.__init__(self)
 
     def read_table(self):
-        """ reads the items contains in the table """
+        """ 
+            reads the items contains in a table
+            reads each product or substitute
+            one after the other
+            In reception : self.columns_read, self.table,
+                           self.clauses and self.catg
+        """
         query = " SELECT " + ",".join(self.columns_read)
         query += " FROM " + self.table + " "
-        if self.table == 'Substitutes':
-            query += self.inner_join
-        elif self.table == 'Product':
-            query += " WHERE category_id=" + str(self.catg)
+        query += self.clauses
+        # to load products from a single category 
+        if self.table == 'Product':
+            query += str(self.catg)
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    def update_table(self, values_dico, *category_id):
-        """ records in the table the information transmitted in 'values_dico' """
+    def update_table(self, values_dico):
+        """ 
+            records in the table the informations transmitted in 'values_dico'
+            In reception : self.columns_update, values_dico, self.table
+        """
         # tuple of the columns to fill (name, brand, ...)
         columns = ' (' + ",".join(self.columns_update) + ')'
         # values to set in columns of table
         values = ",".join(["'" + values_dico[key] + "'" for key in values_dico])
-        if category_id:
-            values += ',' + str(category_id[0])
         query = " INSERT INTO " + self.table + columns + " VALUES (" + values + ")"
         self.cursor.execute(query)
         self.cnx.commit()
@@ -40,12 +46,15 @@ class RequestSql(InitialiseDatabase):
         query = " SET FOREIGN_KEY_CHECKS = 0 "
         self.cursor.execute(query)
         # drop all tables : Category, Product and Substitutes
-        for table in self.Tables_list:
+        for table in Tables_list:
             query = " DROP TABLE IF EXISTS BDD_OFF." + table
             self.cursor.execute(query)
 
     def create_table(self):
-        """ creation of tables Category, Product and Substitutes """
+        """ 
+            creation of tables Category, Product and Substitutes
+            In reception : self.table, self.columns_create
+        """
         query = " CREATE TABLE " + self.table + "(" + \
                 self.columns_create + ")" + " ENGINE = InnoDB "
         self.cursor.execute(query)

@@ -25,7 +25,7 @@ class Substitute(RequestSql):
                                 REFERENCES BDD_OFF.Product (id)\
                                 ON DELETE NO ACTION\
                                 ON UPDATE NO ACTION"
-        self.inner_join = "INNER JOIN Product AS Original \
-                          ON Original.id = Substitutes.original_id \
-                          INNER JOIN Product As Substitut \
-                          ON Substitut.id = Substitutes.substitut_id"
+        self.clauses = "INNER JOIN Product AS Original \
+                        ON Original.id = Substitutes.original_id \
+                        INNER JOIN Product As Substitut \
+                        ON Substitut.id = Substitutes.substitut_id"

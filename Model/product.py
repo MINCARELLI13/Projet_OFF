@@ -9,12 +9,10 @@ class Product(RequestSql):
     def __init__(self):
         RequestSql.__init__(self)
         self.table = "Product"
-        self.catg = ""
         self.columns_read = ['id', 'name', 'brand', 'url', 'nutriscore',
                              'ingredients', 'stores', 'category_id']
         self.columns_update = ['name', 'brand', 'url', 'nutriscore',
                                'ingredients', 'stores', 'category_id']
-        self.clauses_select = "WHERE category_id="
         self.columns_create = "id INT NOT NULL AUTO_INCREMENT,\
                                 name VARCHAR(100) NOT NULL,\
                                 brand VARCHAR(100) NOT NULL,\
@@ -30,3 +28,5 @@ class Product(RequestSql):
                                 REFERENCES BDD_OFF.Category (id)\
                                 ON DELETE NO ACTION\
                                 ON UPDATE NO ACTION"
+        self.clauses = "WHERE category_id="
+        self.catg = ""

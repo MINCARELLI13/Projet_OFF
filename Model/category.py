@@ -14,3 +14,4 @@ class Category(RequestSql):
         self.columns_create = "id INT AUTO_INCREMENT,\
                               name VARCHAR(100) NOT NULL UNIQUE,\
                               PRIMARY KEY (id)"
+        self.clauses = ""
