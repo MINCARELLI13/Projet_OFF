@@ -10,7 +10,7 @@ class Substitute(RequestSql):
         RequestSql.__init__(self)
         self.table = "Substitutes"
         self.columns_read = ['Original.name', 'Original.brand',
-                                 'Substitut.name', 'Substitut.brand']
+                             'Substitut.name', 'Substitut.brand']
         self.columns_update = ['original_id', 'substitut_id']
         self.columns_create = "original_id INT NOT NULL,\
                                 substitut_id INT NOT NULL,\
