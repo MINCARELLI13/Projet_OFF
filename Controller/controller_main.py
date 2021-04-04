@@ -137,8 +137,13 @@ class Control:
         title = "Produit à remplacer par un substitut : "
         self.show.display_details_of_product(self.selected_product,
                                              NAME_OF_PRODUCT_FIELDS, title)
-        # displays all substitutes of product
-        self.show.display_substitutes_of_product(substitutes_list)
+        if substitutes_list:
+            # displays all substitutes of product
+            self.show.display_substitutes_of_product(substitutes_list)
+        # if no substitutes to propose
+        else:
+             print("Aucun substitut n'a été trouvé pour le produit ci-dessus !")
+             print()
 
     def display_product_and_substitute(self):
         """ displays a product and the selected substitute """
