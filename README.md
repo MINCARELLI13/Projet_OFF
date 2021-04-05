@@ -1,4 +1,4 @@
-#"OpenFoodFacts App"
+# "OpenFoodFacts App"
 
 
 #What is the goal of this application ?
@@ -9,7 +9,7 @@ The user will also have the possibility to register the food products which inte
 Finally, it will be possible for the user to request the update of the database by downloading the latest information available on the API of the OpenFoodFacts site. 
 
 
-# How to install the app ?
+#How to install the app ?
 
 1) To install this application, you have to download all the files and folders contained in the following Github repository : https://github.com/MINCARELLI13/Projet_OFF.git  then save everything in a 'Project_OFF' folder for example (obviously, you can name this folder whatever you want) 
 2) Secondly you can create a virtual environment so as not to pollute the Python of your system with libraries which are only useful for this particular project (look at the end of this 'Readme' for know how to install a virtual environment). 
@@ -25,7 +25,7 @@ Finally, it will be possible for the user to request the update of the database 
 3) Finally you just have to run the "main.py" file with the following command : " python main.py ".
 
 
-# How to create and use virtual environnement ?
+#How to create and use virtual environnement ?
 
 1) In your command prompt, you must first install the "virtualenv" application by typing the following command : " pip install virtualenv " (that means installes "virtualenv" with "pip" application).
 2) In the folder of the project, create the virtual environnement in typing the command line : " virtualenv -p python3 project_venv " (where "project_venv" is the name of the created virtual environment and "python3" is the version of python used in this new virtual environment).
