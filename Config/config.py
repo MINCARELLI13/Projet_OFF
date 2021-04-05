@@ -7,7 +7,7 @@ Tables_list = ['Category', 'Product', 'Substitutes']
 CATEGORIES = {1: 'Snacks salés', 2: 'Gâteaux',3: 'Sodas',4: 'Desserts glacés',5: 'Plats préparés'}
 
 """ number of products to load per category """
-PRODUCTS_NB = 10
+PRODUCTS_NB = 20
 
 """ user of MySQL """
 USER = 'root'
