@@ -13,8 +13,7 @@ Finally, it will be possible for the user to request the update of the database 
 
 1) To install this application, you have to download all the files and folders contained in the following Github repository : https://github.com/MINCARELLI13/Projet_OFF.git  then save everything in a 'Project_OFF' folder for example (obviously, you can name this folder whatever you want).
 2) Secondly you can create a virtual environment so as not to pollute the Python of your system with libraries which are only useful for this particular project (look at the end of this 'Readme' for know how to install a virtual environment). 
-3) Finally, you will have to launch the 'requirements.txt' file which contains all the softwares used by the application (requests, mysql.connector
-, mysql-connector-python and virtualenv).  
+3) Finally, you will have to launch the 'requirements.txt' file which contains all the softwares (requests, mysql-connector-python and virtualenv) used by the application.  
 (nota bene: this application is encoded with the python 3 language).
 
 
