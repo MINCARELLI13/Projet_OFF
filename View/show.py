@@ -62,11 +62,12 @@ class Show:
         self.__clear()
         if title:
             print("Produit à remplacer par un substitut :")
+        cut_nb = 130
         for i in range(1, 7):
-            # if there are a lot of ingredients, cut the list in half
-            if (i == 5) and (len(product[i]) > 230):
-                print('  ', name_of_product_fields[i-1], ' :', product[i][0:230])
-                print('  ', product[i][230:460])
+            # if there are a lot of ingredients, cut the list at "cut_nb" characters
+            if (i == 5) and (len(product[i]) > cut_nb):
+                print('  ', name_of_product_fields[i-1], ' :', product[i][0:cut_nb])
+                print('  ', product[i][cut_nb:cut_nb*2+14])
             # else display all the ingredients on one line
             else:
                 print('  ', name_of_product_fields[i-1], ' :', product[i])
@@ -86,11 +87,12 @@ class Show:
     def display_details_of_substitute(self, substitute, name_of_product_fields):
         """ displays details of a 'substitute' """
         print("Substitut sélectionné pour le produit ci-dessus :")
+        cut_nb = 130
         for i in range(1, 7):
-            # if there are a lot of ingredients, cut the list in half
-            if (i == 5) and (len(substitute[i]) > 230):
-                print('  ', name_of_product_fields[i-1], ' :', substitute[i][0:230])
-                print('  ', substitute[i][230:460])
+            # if there are a lot of ingredients, cut the list at "cut_nb" characters
+            if (i == 5) and (len(substitute[i]) > cut_nb):
+                print('  ', name_of_product_fields[i-1], ' :', substitute[i][0:cut_nb])
+                print('  ', substitute[i][cut_nb:cut_nb*2+14])
             # else display all the ingredients on one line
             else:
                 print('  ', name_of_product_fields[i-1], ' :', substitute[i])
