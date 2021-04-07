@@ -4,7 +4,7 @@ from Config.config import CATEGORIES, FIELDS_PRODUCTS_API,\
                           PRODUCTS_NB, URL, FIELDS_SQL_API
 from Model.model_api import RequestApi
 from Model.model_sql import RequestSql
-from Model.Table import Product, Category, Substitute
+from Model.table import Product, Category, Substitute
 
 
 class Request:
