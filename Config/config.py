@@ -7,7 +7,10 @@ Tables_list = ['Category', 'Product', 'Substitutes']
 CATEGORIES = {1: 'Snacks salés', 2: 'Gâteaux',3: 'Sodas',4: 'Desserts glacés',5: 'Plats préparés'}
 
 """ number of products to load per category """
-PRODUCTS_NB = 20
+PRODUCTS_NB = 10
+
+""" number of substitutes to propose for a product """
+NB_OF_SUBSTITUTS = 10
 
 """ user of MySQL """
 USER = 'root'
@@ -31,5 +34,3 @@ FIELDS_SQL_API = {'name': 'product_name_fr', 'brand': 'brands', 'url': 'url', 'n
                  'ingredients': 'ingredients_text_fr', 'stores': 'stores'}
 
 NAME_OF_PRODUCT_FIELDS = ('nom', 'marque', 'url', 'nutriscore', 'ingrédients', 'magasins')
-
-NB_OF_SUBSTITUTS = 10
