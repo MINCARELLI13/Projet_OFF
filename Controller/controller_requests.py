@@ -3,10 +3,8 @@
 from Config.config import CATEGORIES, FIELDS_PRODUCTS_API,\
                           PRODUCTS_NB, URL, FIELDS_SQL_API
 from Model.model_api import RequestApi
-from Model.category import Category
-from Model.product import Product
-from Model.substitute import Substitute
 from Model.model_sql import RequestSql
+from Model.Table import Product, Category, Substitute
 
 
 class Request:
